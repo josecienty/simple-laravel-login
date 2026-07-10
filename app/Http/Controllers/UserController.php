@@ -87,6 +87,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if(!$user) abort(404);
+
         return Inertia::render('users/edit', [
             'user' => $user,
         ]);
