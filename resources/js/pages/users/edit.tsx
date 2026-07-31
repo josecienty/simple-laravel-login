@@ -13,7 +13,7 @@ export default function EditForm({ user }: Props) {
         <Head title="Editar usuario" />
 
         <div className="w-full flex">
-            <div className="mx-auto max-w-xl p-6">
+            <div className="mx-auto w-full md:max-w-xl p-6">
                 <UserForm user={user} />
             </div>
         </div>

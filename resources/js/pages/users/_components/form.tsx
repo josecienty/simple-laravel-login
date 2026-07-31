@@ -44,7 +44,7 @@ export default function UserForm({ user }: Props) {
         const {isConfirmed} = await NiceAlert.fire({
             title: '¿Estas seguro?',
             text: `Estas a punto de ${isEdit ? 'editar' : 'registrar'} un usuario`,
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonText: `Si ${isEdit ? 'editar' : 'registrar'}`,
             cancelButtonText: 'Cancelar',

@@ -7,7 +7,7 @@ export default function CreateUsuario() {
         <Head title="Registrar usuario" />
 
         <div className="w-full flex">
-            <div className="mx-auto max-w-xl p-6">
+            <div className="mx-auto w-full md:max-w-xl p-6">
                 <UserForm />
             </div>
         </div>

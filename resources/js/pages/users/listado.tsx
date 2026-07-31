@@ -16,6 +16,7 @@ import Heading from '@/components/heading'
 import { } from '@/components/ui/breadcrumb'
 import users from '@/routes/users'
 import { User } from '@/types'
+import NiceAlert from '@josecienty/nice-alert'
 
 interface Props {
     users: {
@@ -36,8 +37,12 @@ const edit = (user: User) => {
     router.visit(users.edit(user))
 }
 
-const nuevo = () =>{
+const nuevo = () => {
     router.visit(users.create())
+}
+
+const eliminar = (user: User) => {
+    router.delete(users.destroy(user.id))
 }
 
 export default function UsersIndex({ users }: Props) {
@@ -76,6 +81,31 @@ export default function UsersIndex({ users }: Props) {
 }
 
 const TableData = ({ users }: { users: User[] }) => {
+
+    const goodByeUser = async (user: User) => {
+        const { isConfirmed } = await NiceAlert.fire({
+            title: '¿Estas seguro?',
+            text: `Estas a punto de eliminar a ${user.name}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, eliminar',
+            cancelButtonText: 'Cancelar',
+        });
+
+        if (!isConfirmed) return;
+
+        const resu = await eliminar(user);
+        console.log(resu);
+
+        NiceAlert.fire({
+            icon: 'success',
+            title: `Se elimino a ${user.name} con exito`,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+        });
+    }
+
     return <>
         <Table>
             <TableHeader>
@@ -152,6 +182,7 @@ const TableData = ({ users }: { users: User[] }) => {
                                 <Button
                                     size="icon"
                                     variant="destructive"
+                                    onClick={() => goodByeUser(user)}
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
