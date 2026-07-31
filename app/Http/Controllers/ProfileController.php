@@ -26,8 +26,15 @@ class ProfileController extends Controller
     }
 
     /**
+     * Muestra el formulario para crear un perfil.
+     */
+    public function create(): Response
+    {
+        return Inertia::render('profiles/create');
+    }
+
+    /**
      * Guarda un nuevo perfil.
-     * (La vista de creación aún no está implementada, solo el endpoint).
      */
     public function store(Request $request): RedirectResponse
     {
@@ -45,8 +52,17 @@ class ProfileController extends Controller
     }
 
     /**
+     * Muestra el formulario para editar un perfil.
+     */
+    public function edit(Profile $profile): Response
+    {
+        return Inertia::render('profiles/edit', [
+            'profile' => $profile,
+        ]);
+    }
+
+    /**
      * Actualiza un perfil existente.
-     * (La vista de edición aún no está implementada, solo el endpoint).
      */
     public function update(Request $request, Profile $profile): RedirectResponse
     {

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->unsignedInteger('order')->default(0);
             $table->boolean('status')->default(true);
             $table->timestamps();

@@ -20,8 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{user}', 'destroy')->name('users.destroy');
     })->name('users.');
 
-    Route::resource('profiles', ProfileController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('profiles', ProfileController::class);
+        // ->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__ . '/settings.php';
