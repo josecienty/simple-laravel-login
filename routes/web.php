@@ -13,6 +13,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
        Route::get('/','index')->name('users.index');
        Route::get('/nuevo', 'create')->name('users.create');
        Route::get('/{user}', 'edit')->name('users.edit'); 
+       
+       route::post('/', 'store')->name('users.store');
+       Route::put('/{user}', 'update')->name('users.update');
+       Route::delete('/{user}', 'destroy')->name('users.destroy');
     })->name('users.');
 });
 

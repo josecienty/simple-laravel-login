@@ -15,6 +15,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/framework (LARAVEL) - v13
 - laravel/prompts (PROMPTS) - v0
 - laravel/wayfinder (WAYFINDER) - v0
+- tightenco/ziggy (ZIGGY) - v2
 - larastan/larastan (LARASTAN) - v3
 - laravel/boost (BOOST) - v2
 - laravel/mcp (MCP) - v0
@@ -27,7 +28,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - react (REACT) - v19
 - tailwindcss (TAILWINDCSS) - v4
 - @laravel/vite-plugin-wayfinder (WAYFINDER_VITE) - v0
-- eslint (ESLINT) - v9
+- eslint (ESLINT) - v10
 - prettier (PRETTIER) - v3
 
 ## Skills Activation

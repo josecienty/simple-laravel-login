@@ -5,7 +5,16 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import '@josecienty/nice-alert/style.css';
+// import { Ziggy } from './ziggy'
 
+// declare global {
+//     interface Window {
+//         Ziggy: typeof Ziggy
+//     }
+// }
+
+// window.Ziggy = Ziggy;
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({

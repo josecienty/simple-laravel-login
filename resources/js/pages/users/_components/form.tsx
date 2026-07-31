@@ -12,7 +12,10 @@ import {
     Label
 } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import {  } from '@/components/ui/select'
+import { } from '@/components/ui/select'
+
+import { route } from 'ziggy-js'
+import { NiceAlert } from '@josecienty/nice-alert';
 
 interface User {
     id: number
@@ -35,15 +38,27 @@ export default function UserForm({ user }: Props) {
         password_confirmation: '',
     })
 
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault()
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const {isConfirmed} = await NiceAlert.fire({
+            title: '¿Estas seguro?',
+            text: `Estas a punto de ${isEdit ? 'editar' : 'registrar'} un usuario`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: `Si ${isEdit ? 'editar' : 'registrar'}`,
+            cancelButtonText: 'Cancelar',
+        });
+
+        // No confirmó, entonces no pasó nada
+        if(!isConfirmed) return ;
 
         if (isEdit) {
-            // form.put(route('users.update', user.id))
+            form.put(route('users.update', user.id))
             return
         }
 
-        // form.post(route('users.store'))
+        form.post(route('users.store'))
     }
 
     return (
