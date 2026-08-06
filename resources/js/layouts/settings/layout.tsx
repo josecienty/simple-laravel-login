@@ -1,4 +1,5 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { Palette, ScrollText, ShieldCheck, UserRound } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cn, toUrl } from '@/lib/utils';
 import { edit as editAppearance } from '@/routes/appearance';
+import { index as auditIndex } from '@/routes/audit';
 import { edit } from '@/routes/profile';
 import { edit as editSecurity } from '@/routes/security';
 import type { NavItem } from '@/types';
@@ -14,22 +16,30 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Perfil',
         href: edit(),
-        icon: null,
+        icon: UserRound,
     },
     {
         title: 'Seguridad',
         href: editSecurity(),
-        icon: null,
+        icon: ShieldCheck,
     },
     {
         title: 'Apariencia',
         href: editAppearance(),
-        icon: null,
+        icon: Palette,
+    },
+    {
+        title: 'Auditoría',
+        href: auditIndex(),
+        icon: ScrollText,
     },
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
+    // La página de auditoría necesita más ancho para la tabla.
+    const { component } = usePage();
+    const isAudit = component.startsWith('settings/audit');
 
     return (
         <div className="px-4 py-6">
@@ -67,8 +77,15 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
+                <div
+                    className={cn('min-w-0 flex-1', !isAudit && 'md:max-w-2xl')}
+                >
+                    <section
+                        className={cn(
+                            'space-y-12',
+                            isAudit ? 'max-w-6xl' : 'max-w-xl',
+                        )}
+                    >
                         {children}
                     </section>
                 </div>

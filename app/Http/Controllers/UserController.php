@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\User;
+use App\Services\AuditLogger;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -75,12 +76,18 @@ class UserController extends Controller
             ],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'profile_id' => $validated['profile_id'],
         ]);
+
+        AuditLogger::log('user.store', 'Usuario creado', [
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ], $request->user()?->id);
 
         return redirect()
             ->route('users.index')
@@ -133,6 +140,11 @@ class UserController extends Controller
 
         $user->update($validated);
 
+        AuditLogger::log('user.update', 'Usuario actualizado', [
+            'user_id' => $user->id,
+            'name' => $user->name,
+        ], $request->user()?->id);
+
         return redirect()
             ->route('users.index')
             ->with('success', 'Usuario actualizado correctamente.');
@@ -143,7 +155,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $name = $user->name;
+
         $user->delete();
+
+        AuditLogger::log('user.destroy', 'Usuario eliminado', [
+            'user_id' => $user->id,
+            'name' => $name,
+        ], request()->user()?->id);
 
         return redirect()
             ->route('users.index')

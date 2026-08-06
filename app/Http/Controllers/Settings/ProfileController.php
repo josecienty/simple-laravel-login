@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileDeleteRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Services\AuditLogger;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        AuditLogger::log('profile.settings.update', 'Perfil de cuenta actualizado', [], $request->user()->id);
+
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
 
         return to_route('profile.edit');
@@ -49,6 +52,11 @@ class ProfileController extends Controller
     public function destroy(ProfileDeleteRequest $request): RedirectResponse
     {
         $user = $request->user();
+
+        AuditLogger::log('profile.settings.destroy', 'Cuenta de usuario eliminada', [
+            'name' => $user->name,
+            'email' => $user->email,
+        ], $user->id);
 
         Auth::logout();
 

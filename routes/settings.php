@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Settings\AuditController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
+use App\Http\Controllers\Settings\SessionController;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +24,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('settings/password', [SecurityController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('user-password.update');
+
+    Route::delete('settings/sessions/{session}', [SessionController::class, 'destroy'])->name('sessions.destroy');
+    Route::delete('settings/sessions', [SessionController::class, 'destroyOthers'])->name('sessions.destroy-others');
+
+    Route::get('settings/audit', [AuditController::class, 'index'])
+        ->middleware(RequirePassword::class)
+        ->name('audit.index');
 
     Route::inertia('settings/appearance', 'settings/appearance')->name('appearance.edit');
 });

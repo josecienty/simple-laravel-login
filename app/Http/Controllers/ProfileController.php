@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -45,7 +46,12 @@ class ProfileController extends Controller
             'status' => ['boolean'],
         ]);
 
-        Profile::create($data);
+        $profile = Profile::create($data);
+
+        AuditLogger::log('profile.store', 'Perfil creado', [
+            'profile_id' => $profile->id,
+            'name' => $profile->name,
+        ], $request->user()?->id);
 
         return redirect()
             ->route('profiles.index')
@@ -75,6 +81,11 @@ class ProfileController extends Controller
 
         $profile->update($data);
 
+        AuditLogger::log('profile.update', 'Perfil actualizado', [
+            'profile_id' => $profile->id,
+            'name' => $profile->name,
+        ], $request->user()?->id);
+
         return redirect()
             ->route('profiles.index')
             ->with('success', 'Perfil actualizado correctamente.');
@@ -91,7 +102,14 @@ class ProfileController extends Controller
                 ->with('error', 'No se puede eliminar el perfil porque tiene usuarios asignados.');
         }
 
+        $name = $profile->name;
+
         $profile->delete();
+
+        AuditLogger::log('profile.destroy', 'Perfil eliminado', [
+            'profile_id' => $profile->id,
+            'name' => $name,
+        ], request()->user()?->id);
 
         return redirect()
             ->route('profiles.index')
