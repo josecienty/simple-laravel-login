@@ -140,8 +140,8 @@ export default function Dashboard({
         <>
             <Head title="Dashboard" />
 
-            <div className="w-full p-4">
-                <div className="mx-auto max-w-[1800px] space-y-6">
+            <div className="w-full p-3 sm:p-4">
+                <div className="mx-auto max-w-[1800px] space-y-5 sm:space-y-6">
                     <h1 className="sr-only">Dashboard</h1>
 
                     <Heading
@@ -151,7 +151,7 @@ export default function Dashboard({
                     />
 
                     {/* Tarjetas de resumen */}
-                    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
                         <StatCard
                             title="Usuarios"
                             value={stats.total_users}
@@ -187,27 +187,27 @@ export default function Dashboard({
                         />
                     </div>
 
-                    <div className="grid gap-6 lg:grid-cols-3">
+                    <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
                         {/* Donut: usuarios por perfil */}
-                        <Card className="flex flex-col">
-                            <CardHeader>
+                        <Card className="flex flex-col gap-4 py-4 sm:gap-6 sm:py-6">
+                            <CardHeader className="px-4 sm:px-6">
                                 <CardTitle>Usuarios por perfil</CardTitle>
                                 <CardDescription>
                                     Distribución según el perfil asignado
                                 </CardDescription>
                             </CardHeader>
 
-                            <CardContent className="flex flex-1 flex-col">
+                            <CardContent className="flex flex-1 flex-col px-4 sm:px-6">
                                 {donutData.length === 0 ? (
                                     <p className="py-10 text-center text-sm text-muted-foreground">
                                         Aún no hay datos para mostrar.
                                     </p>
                                 ) : (
-                                    <div className="flex flex-1 flex-col items-center justify-center gap-6 sm:flex-row">
+                                    <div className="flex flex-1 flex-col items-center justify-center gap-5 sm:flex-row sm:gap-6">
                                         <div
                                             role="img"
                                             aria-label="Distribución de usuarios por perfil"
-                                            className="relative h-52 w-52 shrink-0 sm:h-56 sm:w-56"
+                                            className="relative h-48 w-48 shrink-0 sm:h-56 sm:w-56"
                                         >
                                             <ResponsiveContainer
                                                 width="100%"
@@ -245,7 +245,7 @@ export default function Dashboard({
                                             </ResponsiveContainer>
 
                                             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                                                <span className="text-3xl font-semibold tabular-nums">
+                                                <span className="text-2xl font-semibold tabular-nums sm:text-3xl">
                                                     {donutTotal}
                                                 </span>
                                                 <span className="text-xs text-muted-foreground">
@@ -291,8 +291,8 @@ export default function Dashboard({
                         </Card>
 
                         {/* Área: registros últimos 30 días */}
-                        <Card className="lg:col-span-2">
-                            <CardHeader className="flex-row items-center justify-between space-y-0">
+                        <Card className="gap-4 py-4 sm:gap-6 sm:py-6 lg:col-span-2">
+                            <CardHeader className="flex-row items-center justify-between space-y-0 px-4 sm:px-6">
                                 <div className="space-y-1.5">
                                     <CardTitle>Registros de usuarios</CardTitle>
                                     <CardDescription>
@@ -306,7 +306,7 @@ export default function Dashboard({
                                 </span>
                             </CardHeader>
 
-                            <CardContent>
+                            <CardContent className="px-4 sm:px-6">
                                 {totalRegistrations === 0 ? (
                                     <p className="py-10 text-center text-sm text-muted-foreground">
                                         Aún no hay registros en los últimos 30
@@ -316,7 +316,7 @@ export default function Dashboard({
                                     <div
                                         role="img"
                                         aria-label="Registros de usuarios en los últimos 30 días"
-                                        className="h-64"
+                                        className="h-52 sm:h-64"
                                     >
                                         <ResponsiveContainer
                                             width="100%"
@@ -406,17 +406,17 @@ export default function Dashboard({
                         </Card>
                     </div>
 
-                    <div className="grid gap-6 lg:grid-cols-3">
+                    <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
                         {/* Cobertura de perfiles */}
-                        <Card className="flex flex-col">
-                            <CardHeader>
+                        <Card className="flex flex-col gap-4 py-4 sm:gap-6 sm:py-6">
+                            <CardHeader className="px-4 sm:px-6">
                                 <CardTitle>Cobertura de perfiles</CardTitle>
                                 <CardDescription>
                                     Usuarios con un perfil asignado
                                 </CardDescription>
                             </CardHeader>
 
-                            <CardContent className="flex flex-1 flex-col items-center justify-center gap-5">
+                            <CardContent className="flex flex-1 flex-col items-center justify-center gap-5 px-4 sm:px-6">
                                 <CoverageRing
                                     percentage={profileCoverage}
                                     color="#10b981"
@@ -446,8 +446,8 @@ export default function Dashboard({
                         </Card>
 
                         {/* Últimos usuarios registrados */}
-                        <Card className="lg:col-span-2">
-                            <CardHeader className="flex-row items-center justify-between space-y-0">
+                        <Card className="gap-4 py-4 sm:gap-6 sm:py-6 lg:col-span-2">
+                            <CardHeader className="flex-row items-center justify-between space-y-0 px-4 sm:px-6">
                                 <div className="space-y-1.5">
                                     <CardTitle>
                                         Últimos usuarios registrados
@@ -467,7 +467,7 @@ export default function Dashboard({
                                 </Link>
                             </CardHeader>
 
-                            <CardContent className="space-y-1">
+                            <CardContent className="space-y-1 px-4 sm:px-6">
                                 {recent_users.length === 0 && (
                                     <p className="py-6 text-center text-sm text-muted-foreground">
                                         Aún no hay usuarios registrados.
@@ -546,14 +546,14 @@ function StatCard({
     const content = (
         <>
             <div
-                className={`pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br to-transparent opacity-70 blur-2xl transition-opacity duration-300 group-hover:opacity-100 ${style.glow}`}
+                className={`pointer-events-none absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br to-transparent opacity-70 blur-2xl transition-opacity duration-300 group-hover:opacity-100 sm:-top-10 sm:-right-10 sm:h-32 sm:w-32 ${style.glow}`}
             />
 
             <div className="relative flex items-center justify-between">
                 <span
-                    className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-inset ${style.chip}`}
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-inset sm:h-11 sm:w-11 sm:rounded-xl ${style.chip}`}
                 >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </span>
 
                 {href && (
@@ -563,19 +563,19 @@ function StatCard({
 
             <div className="relative">
                 <p
-                    className={`text-3xl font-semibold tabular-nums ${style.value}`}
+                    className={`text-2xl font-semibold tabular-nums sm:text-3xl ${style.value}`}
                 >
                     {value}
                 </p>
                 <p className="mt-0.5 text-sm font-medium">{title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-xs">
                     {description}
                 </p>
             </div>
         </>
     );
 
-    const className = `group relative flex flex-col gap-4 overflow-hidden rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md ${style.border}`;
+    const className = `group relative flex flex-col gap-3 overflow-hidden rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md sm:gap-4 sm:p-6 ${style.border}`;
 
     if (href) {
         return (
