@@ -31,6 +31,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { avatarColors } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import profiles from '@/routes/profiles';
 import users from '@/routes/users';
@@ -474,20 +475,14 @@ export default function Dashboard({
                                     </p>
                                 )}
 
-                                {recent_users.map((user, index) => (
+                                {recent_users.map((user) => (
                                     <div
                                         key={user.id}
                                         className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-muted/50"
                                     >
                                         <div
-                                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
-                                            style={{
-                                                backgroundColor:
-                                                    CHART_COLORS[
-                                                        index %
-                                                            CHART_COLORS.length
-                                                    ],
-                                            }}
+                                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
+                                            style={avatarColors(user.name)}
                                         >
                                             {user.name.charAt(0).toUpperCase()}
                                         </div>

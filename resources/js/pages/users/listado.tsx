@@ -14,6 +14,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { UsersModuleTabs } from '@/components/users-module-tabs';
+import { avatarColors } from '@/lib/utils';
 import users from '@/routes/users';
 import type { User } from '@/types';
 
@@ -128,8 +129,11 @@ const TableData = ({ users }: { users: User[] }) => {
                         <TableRow key={user.id}>
                             <TableCell>
                                 <div className="flex items-center gap-3">
-                                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                                        {user.name.charAt(0)}
+                                    <div
+                                        className="flex h-9 w-9 items-center justify-center rounded-full font-semibold"
+                                        style={avatarColors(user.name)}
+                                    >
+                                        {user.name.charAt(0).toUpperCase()}
                                     </div>
 
                                     <span className="font-medium">
