@@ -16,6 +16,7 @@ test('an authenticated user can create a user with a profile', function () {
         ->actingAs($admin)
         ->post(route('users.store'), [
             'name' => 'Juan Pérez',
+            'username' => 'juanperez',
             'email' => 'juan@example.com',
             'password' => 'secret-password',
             'profile_id' => $profile->id,
@@ -25,10 +26,32 @@ test('an authenticated user can create a user with a profile', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('users.index'));
 
-    $user = User::where('email', 'juan@example.com')->first();
+    $user = User::where('username', 'juanperez')->first();
 
     expect($user)->not->toBeNull()
-        ->and($user->profile_id)->toBe($profile->id);
+        ->and($user->profile_id)->toBe($profile->id)
+        ->and($user->email)->toBe('juan@example.com');
+});
+
+test('a user can be created without an email', function () {
+    $admin = User::factory()->create();
+    $profile = Profile::factory()->create();
+
+    $response = $this
+        ->actingAs($admin)
+        ->post(route('users.store'), [
+            'name' => 'Sin Correo',
+            'username' => 'sincorreo',
+            'email' => '',
+            'password' => 'secret-password',
+            'profile_id' => $profile->id,
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('users.index'));
+
+    expect(User::where('username', 'sincorreo')->first()->email)->toBeNull();
 });
 
 test('profile is required when creating a user', function () {
@@ -38,6 +61,7 @@ test('profile is required when creating a user', function () {
         ->actingAs($admin)
         ->post(route('users.store'), [
             'name' => 'Juan Pérez',
+            'username' => 'juanperez',
             'email' => 'juan@example.com',
             'password' => 'secret-password',
         ]);
@@ -54,6 +78,7 @@ test('a user profile assignment can be updated', function () {
         ->actingAs($admin)
         ->put(route('users.update', $user), [
             'name' => $user->name,
+            'username' => $user->username,
             'email' => $user->email,
             'profile_id' => $profile->id,
         ]);

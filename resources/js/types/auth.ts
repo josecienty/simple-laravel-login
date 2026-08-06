@@ -3,7 +3,8 @@ import type { Profile } from './profile';
 export type User = {
     id: number;
     name: string;
-    email: string;
+    username: string;
+    email: string | null;
     avatar?: string;
     email_verified_at: string | null;
     profile_id?: number | null;

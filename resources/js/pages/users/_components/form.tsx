@@ -24,7 +24,8 @@ import type { Profile } from '@/types';
 interface User {
     id: number;
     name: string;
-    email: string;
+    username: string;
+    email: string | null;
     profile_id?: number | null;
 }
 
@@ -38,6 +39,7 @@ export default function UserForm({ user, profiles }: Props) {
 
     const form = useForm({
         name: user?.name ?? '',
+        username: user?.username ?? '',
         email: user?.email ?? '',
         password: '',
         password_confirmation: '',
@@ -107,12 +109,42 @@ export default function UserForm({ user, profiles }: Props) {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="email">Correo electrónico</Label>
+                        <Label htmlFor="username">Nombre de usuario</Label>
+
+                        <Input
+                            id="username"
+                            autoCapitalize="none"
+                            placeholder="Ej: johndoe"
+                            value={form.data.username}
+                            onChange={(e) =>
+                                form.setData('username', e.target.value)
+                            }
+                        />
+
+                        <p className="text-xs text-muted-foreground">
+                            Solo minúsculas, números, guiones y guiones bajos.
+                            Se usa para iniciar sesión.
+                        </p>
+
+                        {form.errors.username && (
+                            <p className="text-sm text-destructive">
+                                {form.errors.username}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="email">
+                            Correo electrónico{' '}
+                            <span className="text-muted-foreground">
+                                (opcional)
+                            </span>
+                        </Label>
 
                         <Input
                             id="email"
                             type="email"
-                            value={form.data.email}
+                            value={form.data.email ?? ''}
                             onChange={(e) =>
                                 form.setData('email', e.target.value)
                             }

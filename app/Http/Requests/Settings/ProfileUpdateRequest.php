@@ -19,4 +19,14 @@ class ProfileUpdateRequest extends FormRequest
     {
         return $this->profileRules($this->user()->id);
     }
+
+    /**
+     * Normalize the optional email so empty values are stored as null.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'email' => $this->input('email') ?: null,
+        ]);
+    }
 }

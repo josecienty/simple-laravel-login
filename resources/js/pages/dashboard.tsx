@@ -492,7 +492,8 @@ export default function Dashboard({
                                                 {user.name}
                                             </p>
                                             <p className="truncate text-xs text-muted-foreground">
-                                                {user.email}
+                                                {user.email ??
+                                                    `@${user.username}`}
                                             </p>
                                         </div>
 

@@ -34,7 +34,7 @@ export default function Profile({
                 <Heading
                     variant="small"
                     title="Perfil"
-                    description="Modifica tu nombre y correo electr&oacute;nico"
+                    description="Modifica tu nombre de usuario, nombre y correo electr&oacute;nico"
                 />
 
                 <Form
@@ -66,16 +66,42 @@ export default function Profile({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Correo Electrónico</Label>
+                                <Label htmlFor="username">
+                                    Nombre de usuario
+                                </Label>
+
+                                <Input
+                                    id="username"
+                                    className="mt-1 block w-full"
+                                    defaultValue={auth.user.username}
+                                    name="username"
+                                    required
+                                    autoCapitalize="none"
+                                    autoComplete="username"
+                                    placeholder="Nombre de usuario"
+                                />
+
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.username}
+                                />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="email">
+                                    Correo Electrónico{' '}
+                                    <span className="text-muted-foreground">
+                                        (opcional)
+                                    </span>
+                                </Label>
 
                                 <Input
                                     id="email"
                                     type="email"
                                     className="mt-1 block w-full"
-                                    defaultValue={auth.user.email}
+                                    defaultValue={auth.user.email ?? ''}
                                     name="email"
-                                    required
-                                    autoComplete="username"
+                                    autoComplete="email"
                                     placeholder="Correo Electrónico"
                                 />
 

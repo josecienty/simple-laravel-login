@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\User;
 use App\Services\AuditLogger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -20,6 +21,7 @@ class UserController extends Controller
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('username', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
@@ -57,8 +59,17 @@ class UserController extends Controller
                 'max:255',
             ],
 
-            'email' => [
+            'username' => [
                 'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                'lowercase',
+                'unique:users',
+            ],
+
+            'email' => [
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users',
@@ -78,7 +89,8 @@ class UserController extends Controller
 
         $user = User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'username' => Str::lower($validated['username']),
+            'email' => $validated['email'] ?: null,
             'password' => bcrypt($validated['password']),
             'profile_id' => $validated['profile_id'],
         ]);
@@ -125,8 +137,17 @@ class UserController extends Controller
                 'max:255',
             ],
 
-            'email' => [
+            'username' => [
                 'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                'lowercase',
+                'unique:users,username,'.$user->id,
+            ],
+
+            'email' => [
+                'nullable',
                 'email',
                 'max:255',
                 'unique:users,email,'.$user->id,
@@ -138,7 +159,12 @@ class UserController extends Controller
             ],
         ]);
 
-        $user->update($validated);
+        $user->update([
+            'name' => $validated['name'],
+            'username' => Str::lower($validated['username']),
+            'email' => $validated['email'] ?: null,
+            'profile_id' => $validated['profile_id'],
+        ]);
 
         AuditLogger::log('user.update', 'Usuario actualizado', [
             'user_id' => $user->id,

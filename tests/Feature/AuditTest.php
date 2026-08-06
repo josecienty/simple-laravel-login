@@ -11,7 +11,7 @@ test('successful login is recorded in the audit log', function () {
     AuditLog::query()->delete();
 
     $this->post('/login', [
-        'email' => $user->email,
+        'username' => $user->username,
         'password' => 'password',
     ]);
 
@@ -26,14 +26,14 @@ test('failed login is recorded in the audit log', function () {
     AuditLog::query()->delete();
 
     $this->post('/login', [
-        'email' => $user->email,
+        'username' => $user->username,
         'password' => 'wrong-password',
     ]);
 
     $log = AuditLog::query()->where('action', 'login.failed')->first();
 
     expect($log)->not->toBeNull()
-        ->and($log->details['email'])->toBe($user->email);
+        ->and($log->details['identifier'])->toBe($user->username);
 });
 
 test('page visits are recorded for guests and authenticated users', function () {
@@ -120,7 +120,7 @@ test('audit logging can be disabled with the config switch', function () {
     AuditLog::query()->delete();
 
     $this->post('/login', [
-        'email' => $user->email,
+        'username' => $user->username,
         'password' => 'password',
     ]);
 

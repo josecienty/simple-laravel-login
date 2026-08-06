@@ -1,6 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import NiceAlert from '@josecienty/nice-alert';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Search, Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,9 @@ import type { User } from '@/types';
 interface Props {
     users: {
         data: User[];
+    };
+    filters?: {
+        search?: string;
     };
 }
 
@@ -45,7 +49,18 @@ const eliminar = (user: User) => {
     router.delete(users.destroy(user.id));
 };
 
-export default function UsersIndex({ users }: Props) {
+export default function UsersIndex({ users, filters }: Props) {
+    const [search, setSearch] = useState(filters?.search ?? '');
+
+    const handleSearch = () => {
+        const value = search.trim();
+
+        router.get(users.index(), value ? { search: value } : {}, {
+            preserveState: true,
+            replace: true,
+        });
+    };
+
     return (
         <>
             <Head title="Listado de usuarios" />
@@ -67,8 +82,19 @@ export default function UsersIndex({ users }: Props) {
                         </Button>
                     </div>
 
-                    <div className="mb-4">
-                        <Input placeholder="Buscar usuario..." />
+                    <div className="relative mb-4 max-w-md">
+                        <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            className="pl-9"
+                            placeholder="Buscar por nombre, usuario o correo..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearch();
+                                }
+                            }}
+                        />
                     </div>
 
                     <TableData users={users.data} />
@@ -112,6 +138,8 @@ const TableData = ({ users }: { users: User[] }) => {
                     <TableRow>
                         <TableHead>Nombre y Apellido</TableHead>
 
+                        <TableHead>Usuario</TableHead>
+
                         <TableHead>Correo</TableHead>
 
                         <TableHead>Perfil</TableHead>
@@ -142,7 +170,13 @@ const TableData = ({ users }: { users: User[] }) => {
                                 </div>
                             </TableCell>
 
-                            <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                                <span className="font-mono text-sm">
+                                    {user.username}
+                                </span>
+                            </TableCell>
+
+                            <TableCell>{user.email ?? '—'}</TableCell>
 
                             <TableCell>
                                 {user.profile ? (

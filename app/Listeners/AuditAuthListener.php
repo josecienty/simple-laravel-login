@@ -20,13 +20,15 @@ class AuditAuthListener
 
     public function handleFailed(Failed $event): void
     {
-        $email = $event->credentials['email'] ?? null;
-        $userId = $email ? User::where('email', $email)->value('id') : null;
+        $identifier = $event->credentials['username'] ?? $event->credentials['email'] ?? null;
+        $userId = $identifier
+            ? User::where('username', $identifier)->orWhere('email', $identifier)->value('id')
+            : null;
 
         AuditLogger::log(
             'login.failed',
             'Intento de inicio de sesión fallido',
-            ['email' => $email],
+            ['identifier' => $identifier],
             $userId,
         );
     }
