@@ -22,6 +22,14 @@ class Profile extends Model
     ];
 
     /**
+     * Relación: un perfil puede tener muchos usuarios.
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -63,9 +71,9 @@ class Profile extends Model
 
         while (
             static::query()
-            ->where('slug', $slug)
-            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
-            ->exists()
+                ->where('slug', $slug)
+                ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+                ->exists()
         ) {
             $slug = "{$baseSlug}-{$suffix}";
             $suffix++;

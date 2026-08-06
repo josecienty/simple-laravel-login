@@ -16,6 +16,7 @@ class ProfileController extends Controller
     public function index(): Response
     {
         $profiles = Profile::query()
+            ->withCount('users')
             ->orderBy('order')
             ->orderBy('name')
             ->get();
@@ -84,6 +85,12 @@ class ProfileController extends Controller
      */
     public function destroy(Profile $profile): RedirectResponse
     {
+        if ($profile->users()->exists()) {
+            return redirect()
+                ->back()
+                ->with('error', 'No se puede eliminar el perfil porque tiene usuarios asignados.');
+        }
+
         $profile->delete();
 
         return redirect()

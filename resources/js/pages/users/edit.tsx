@@ -1,23 +1,28 @@
-import { Head } from '@inertiajs/react'
-import UserForm from './_components/form'
-import { User } from '@/types'
-import users from '@/routes/users'
+import { Head } from '@inertiajs/react';
+import { UsersModuleTabs } from '@/components/users-module-tabs';
+import users from '@/routes/users';
+import type { User, Profile } from '@/types';
+import UserForm from './_components/form';
 
 interface Props {
-    user: User
+    user: User;
+    profiles: Profile[];
 }
 
+export default function EditForm({ user, profiles }: Props) {
+    return (
+        <>
+            <Head title="Editar usuario" />
 
-export default function EditForm({ user }: Props) {
-    return <>
-        <Head title="Editar usuario" />
+            <div className="flex w-full">
+                <div className="mx-auto w-full space-y-6 p-6 md:max-w-xl">
+                    <UsersModuleTabs />
 
-        <div className="w-full flex">
-            <div className="mx-auto w-full md:max-w-xl p-6">
-                <UserForm user={user} />
+                    <UserForm user={user} profiles={profiles} />
+                </div>
             </div>
-        </div>
-    </>
+        </>
+    );
 }
 
 EditForm.layout = {
@@ -26,8 +31,8 @@ EditForm.layout = {
             title: 'Listado de usuarios',
             href: users.index(),
         },
-         {
+        {
             title: 'Editar usuario',
         },
     ],
-}
+};

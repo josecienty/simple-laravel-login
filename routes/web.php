@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -8,20 +9,33 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/dashboard')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::prefix('/usuarios')->controller(UserController::class)->group(function () {
-        Route::get('/', 'index')->name('users.index');
-        Route::get('/nuevo', 'create')->name('users.create');
-        Route::get('/{user}', 'edit')->name('users.edit');
+    // Perfiles de usuario (integrados dentro del módulo de usuarios).
+    // Se registran antes que /usuarios/{user} para no colisionar con él.
+    Route::name('profiles.')
+        ->prefix('/usuarios/perfiles')
+        ->controller(ProfileController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{profile}', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{profile}', 'update')->name('update');
+            Route::delete('/{profile}', 'destroy')->name('destroy');
+        });
 
-        route::post('/', 'store')->name('users.store');
-        Route::put('/{user}', 'update')->name('users.update');
-        Route::delete('/{user}', 'destroy')->name('users.destroy');
-    })->name('users.');
-
-    Route::resource('profiles', ProfileController::class);
-        // ->only(['index', 'store', 'update', 'destroy']);
+    Route::name('users.')
+        ->prefix('/usuarios')
+        ->controller(UserController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/nuevo', 'create')->name('create');
+            Route::get('/{user}', 'edit')->name('edit');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{user}', 'update')->name('update');
+            Route::delete('/{user}', 'destroy')->name('destroy');
+        });
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

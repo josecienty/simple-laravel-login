@@ -1,17 +1,27 @@
-import { Head } from "@inertiajs/react"
-import UserForm from "./_components/form"
-import users from "@/routes/users"
+import { Head } from '@inertiajs/react';
+import { UsersModuleTabs } from '@/components/users-module-tabs';
+import users from '@/routes/users';
+import type { Profile } from '@/types';
+import UserForm from './_components/form';
 
-export default function CreateUsuario() {
-    return <>
-        <Head title="Registrar usuario" />
+interface Props {
+    profiles: Profile[];
+}
 
-        <div className="w-full flex">
-            <div className="mx-auto w-full md:max-w-xl p-6">
-                <UserForm />
+export default function CreateUsuario({ profiles }: Props) {
+    return (
+        <>
+            <Head title="Registrar usuario" />
+
+            <div className="flex w-full">
+                <div className="mx-auto w-full space-y-6 p-6 md:max-w-xl">
+                    <UsersModuleTabs />
+
+                    <UserForm profiles={profiles} />
+                </div>
             </div>
-        </div>
-    </>
+        </>
+    );
 }
 
 CreateUsuario.layout = {
@@ -25,4 +35,4 @@ CreateUsuario.layout = {
             href: users.create(),
         },
     ],
-}
+};
