@@ -5,8 +5,8 @@ namespace App\Actions\Fortify;
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Models\User;
-use Illuminate\Support\Facades\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -28,7 +28,7 @@ class CreateNewUser implements CreatesNewUsers
         return User::create([
             'name' => $input['name'],
             'username' => Str::lower($input['username']),
-            'email' => $input['email'] ?: null,
+            'email' => $input['email'] ? Str::lower($input['email']) : null,
             'password' => $input['password'],
         ]);
     }

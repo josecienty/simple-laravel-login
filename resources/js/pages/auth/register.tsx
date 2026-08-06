@@ -54,9 +54,14 @@ export default function Register({ passwordRules }: Props) {
                                     required
                                     tabIndex={2}
                                     autoComplete="username"
+                                    autoCapitalize="none"
                                     name="username"
                                     placeholder="  Ej: johndoe"
                                 />
+                                <p className="text-xs text-muted-foreground">
+                                    Solo minúsculas, números, guiones y guiones
+                                    bajos
+                                </p>
                                 <InputError message={errors.username} />
                             </div>
 

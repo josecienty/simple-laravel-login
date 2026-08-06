@@ -90,7 +90,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'username' => Str::lower($validated['username']),
-            'email' => $validated['email'] ?: null,
+            'email' => $validated['email'] ? Str::lower($validated['email']) : null,
             'password' => bcrypt($validated['password']),
             'profile_id' => $validated['profile_id'],
         ]);
@@ -162,7 +162,7 @@ class UserController extends Controller
         $user->update([
             'name' => $validated['name'],
             'username' => Str::lower($validated['username']),
-            'email' => $validated['email'] ?: null,
+            'email' => $validated['email'] ? Str::lower($validated['email']) : null,
             'profile_id' => $validated['profile_id'],
         ]);
 

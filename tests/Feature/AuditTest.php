@@ -68,6 +68,7 @@ test('creating a user through the CRUD is recorded', function () {
 
     $this->actingAs($admin)->post('/usuarios', [
         'name' => 'Nuevo Usuario',
+        'username' => 'nuevousuario',
         'email' => 'nuevo@example.com',
         'password' => 'password',
         'profile_id' => $profile->id,

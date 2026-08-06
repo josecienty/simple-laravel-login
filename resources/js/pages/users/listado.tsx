@@ -49,7 +49,7 @@ const eliminar = (user: User) => {
     router.delete(users.destroy(user.id));
 };
 
-export default function UsersIndex({ users, filters }: Props) {
+export default function UsersIndex({ users: usersPage, filters }: Props) {
     const [search, setSearch] = useState(filters?.search ?? '');
 
     const handleSearch = () => {
@@ -97,7 +97,7 @@ export default function UsersIndex({ users, filters }: Props) {
                         />
                     </div>
 
-                    <TableData users={users.data} />
+                    <TableData users={usersPage.data} />
                 </div>
             </div>
         </>

@@ -34,6 +34,7 @@ class ProfileController extends Controller
     {
         $data = $request->validated();
         $data['username'] = Str::lower($data['username']);
+        $data['email'] = $data['email'] ? Str::lower($data['email']) : null;
 
         $request->user()->fill($data);
 

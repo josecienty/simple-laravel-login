@@ -81,6 +81,11 @@ export default function Profile({
                                     placeholder="Nombre de usuario"
                                 />
 
+                                <p className="text-xs text-muted-foreground">
+                                    Solo minúsculas, números, guiones y guiones
+                                    bajos
+                                </p>
+
                                 <InputError
                                     className="mt-2"
                                     message={errors.username}
