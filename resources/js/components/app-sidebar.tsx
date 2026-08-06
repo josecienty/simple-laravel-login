@@ -16,23 +16,33 @@ import {
 import { dashboard } from '@/routes';
 import profiles from '@/routes/profiles';
 import users from '@/routes/users';
-import type { NavItem } from '@/types';
+import type { NavGroup, NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const navGroups: NavGroup[] = [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
+        label: 'PLATAFORMA',
+        items: [
+            {
+                title: 'Dashboard',
+                href: dashboard(),
+                icon: LayoutGrid,
+            },
+        ],
     },
     {
-        title: 'Usuarios',
-        href: users.index(),
-        icon: Users,
-    },
-    {
-        title: 'Perfiles',
-        href: profiles.index(),
-        icon: Tags,
+        label: 'USUARIOS',
+        items: [
+            {
+                title: 'Usuarios',
+                href: users.index(),
+                icon: Users,
+            },
+            {
+                title: 'Perfiles',
+                href: profiles.index(),
+                icon: Tags,
+            },
+        ],
     },
 ];
 
@@ -65,7 +75,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain groups={navGroups} />
             </SidebarContent>
 
             <SidebarFooter>
