@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Models\User;
 use App\Services\AuditLogger;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
     /**
      * Listado de usuarios.
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $users = User::query()
             ->with('profile')
@@ -40,7 +43,7 @@ class UserController extends Controller
     /**
      * Formulario crear usuario.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('users/create', [
             'profiles' => $this->activeProfiles(),
@@ -50,7 +53,7 @@ class UserController extends Controller
     /**
      * Guardar usuario.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => [
@@ -109,14 +112,17 @@ class UserController extends Controller
     /**
      * Editar usuario.
      */
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
         $profiles = $this->activeProfiles();
 
         // Si el usuario tiene asignado un perfil que fue desactivado,
         // lo incluimos para que el formulario muestre su valor actual.
         if ($user->profile_id && ! $profiles->contains('id', $user->profile_id)) {
-            $profiles->push($user->profile);
+            /** @var Profile $profile */
+            $profile = $user->profile;
+
+            $profiles->push($profile);
         }
 
         return Inertia::render('users/edit', [
@@ -128,7 +134,7 @@ class UserController extends Controller
     /**
      * Actualizar usuario.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
             'name' => [
@@ -179,7 +185,7 @@ class UserController extends Controller
     /**
      * Eliminar usuario.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $name = $user->name;
 
@@ -198,7 +204,10 @@ class UserController extends Controller
     /**
      * Perfiles activos ordenados para los formularios.
      */
-    private function activeProfiles()
+    /**
+     * @return Collection<int, Profile>
+     */
+    private function activeProfiles(): Collection
     {
         return Profile::query()
             ->where('status', true)

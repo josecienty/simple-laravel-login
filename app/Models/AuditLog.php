@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $user_id
  * @property string $action
  * @property string|null $description
- * @property array|null $details
+ * @property array<string, mixed>|null $details
  * @property string|null $ip_address
  * @property string|null $user_agent
  * @property Carbon|null $created_at
@@ -39,6 +39,9 @@ class AuditLog extends Model
         return $date->format('Y/m/d - H:i');
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

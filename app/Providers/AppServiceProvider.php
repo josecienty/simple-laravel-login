@@ -85,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $perMinute = app()->environment('testing')
             ? 100000
-            : (int) env('RATE_LIMIT_PER_MINUTE', 60);
+            : (int) config('app.rate_limit_per_minute', 60);
 
         RateLimiter::for(
             'global',

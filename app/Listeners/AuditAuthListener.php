@@ -15,7 +15,10 @@ class AuditAuthListener
 {
     public function handleLogin(Login $event): void
     {
-        AuditLogger::log('login.success', 'Inicio de sesión exitoso', [], $event->user->id);
+        /** @var User $user */
+        $user = $event->user;
+
+        AuditLogger::log('login.success', 'Inicio de sesión exitoso', [], $user->id);
     }
 
     public function handleFailed(Failed $event): void
@@ -35,24 +38,36 @@ class AuditAuthListener
 
     public function handleLogout(Logout $event): void
     {
-        AuditLogger::log('logout', 'Cierre de sesión', [], $event->user?->id);
+        /** @var User|null $user */
+        $user = $event->user;
+
+        AuditLogger::log('logout', 'Cierre de sesión', [], $user?->id);
     }
 
     public function handleRegistered(Registered $event): void
     {
+        /** @var User $user */
+        $user = $event->user;
+
         AuditLogger::log('register', 'Nuevo usuario registrado', [
-            'name' => $event->user->name,
-            'email' => $event->user->email,
-        ], $event->user->id);
+            'name' => $user->name,
+            'email' => $user->email,
+        ], $user->id);
     }
 
     public function handlePasswordReset(PasswordReset $event): void
     {
-        AuditLogger::log('password.reset', 'Contraseña restablecida', [], $event->user->id);
+        /** @var User $user */
+        $user = $event->user;
+
+        AuditLogger::log('password.reset', 'Contraseña restablecida', [], $user->id);
     }
 
     public function handleVerified(Verified $event): void
     {
-        AuditLogger::log('email.verified', 'Correo electrónico verificado', [], $event->user->id);
+        /** @var User $user */
+        $user = $event->user;
+
+        AuditLogger::log('email.verified', 'Correo electrónico verificado', [], $user->id);
     }
 }

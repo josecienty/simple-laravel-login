@@ -34,7 +34,7 @@ class AuditLogger
                 'user_id' => $userId,
                 'action' => $action,
                 'description' => $description,
-                'details' => $details ?: null,
+                'details' => $details,
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->userAgent(),
             ]);

@@ -107,6 +107,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Rate Limiting
+    |--------------------------------------------------------------------------
+    |
+    | Límite global de peticiones por minuto por IP. Configurable con la
+    | variable RATE_LIMIT_PER_MINUTE en el archivo .env.
+    |
+    */
+
+    'rate_limit_per_minute' => (int) env('RATE_LIMIT_PER_MINUTE', 60),
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |
